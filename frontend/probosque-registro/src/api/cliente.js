@@ -18,6 +18,19 @@ export function mensajeDeError(datos) {
     .join(" · ");
 }
 
+// Baja un archivo del servidor (por ejemplo un documento de media/) como Blob.
+// Sirve para mostrarlo dentro de la página: Django no deja incrustar sus direcciones en un iframe.
+export async function descargarArchivo(url) {
+  let respuesta;
+  try {
+    respuesta = await fetch(url);
+  } catch {
+    throw new Error("No se pudo conectar con el servidor. Revisa que el backend esté corriendo (docker compose up -d).");
+  }
+  if (!respuesta.ok) throw new Error(`El servidor respondió con error ${respuesta.status}.`);
+  return respuesta.blob();
+}
+
 // pedir("/convocatorias/")                                  → GET
 // pedir("/solicitudes/", { metodo: "POST", datos: {...} })  → POST con JSON
 // pedir("/documentos/", { metodo: "POST", datos: formData }) → POST con archivos (multipart)

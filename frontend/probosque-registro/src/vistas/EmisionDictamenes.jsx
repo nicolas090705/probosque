@@ -1,17 +1,21 @@
 import { useState } from "react";
+import VistaPreviaDocumento from "./VistaPreviaDocumento";
 import "./PanelSolicitudes.css";
 
 // HU-2.4-01 · Emisión de dictamen jurídico (Unidad Jurídica)
 // Cada solicitud: { id, folio, nombre, plazo: "texto", documentos: [{ id, nombre, url }] }
-export default function EmisionDictamenes({ solicitudes = [], aprobadas = [], onFavorable, onDesfavorable }) {
+// onAbrirDocumento(doc) devuelve una promesa con el archivo (Blob) para la vista previa.
+export default function EmisionDictamenes({ solicitudes = [], aprobadas = [], onFavorable, onDesfavorable, onAbrirDocumento }) {
   const [seleccionadaId, setSeleccionadaId] = useState(null);
   const [observaciones, setObservaciones] = useState(""); // fundamento del dictamen
+  const [enVistaPrevia, setEnVistaPrevia] = useState(null); // documento abierto en la ventana emergente
   const seleccionada = [...solicitudes, ...aprobadas].find((s) => s.id === seleccionadaId);
   const seleccionadaPendiente = solicitudes.some((s) => s.id === seleccionadaId);
 
   const elegir = (id) => {
     setSeleccionadaId(id);
     setObservaciones("");
+    setEnVistaPrevia(null);
   };
 
   return (
@@ -86,6 +90,17 @@ export default function EmisionDictamenes({ solicitudes = [], aprobadas = [], on
                 {seleccionada.documentos.map((doc) => (
                   <li key={doc.id}>
                     <a href={doc.url} target="_blank" rel="noreferrer">{doc.nombre}</a>
+                    {onAbrirDocumento && (
+                      <button
+                        type="button"
+                        className="ps-documento-ver"
+                        aria-haspopup="dialog"
+                        aria-label={`Vista previa de ${doc.nombre}`}
+                        onClick={() => setEnVistaPrevia(doc)}
+                      >
+                        Vista previa
+                      </button>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -128,6 +143,15 @@ export default function EmisionDictamenes({ solicitudes = [], aprobadas = [], on
           <p className="ps-estado-aprobado">Dictamen jurídico favorable aprobado.</p>
         ) : null}
       </section>
+
+      {enVistaPrevia && (
+        <VistaPreviaDocumento
+          key={enVistaPrevia.id}
+          nombre={enVistaPrevia.nombre}
+          cargar={() => onAbrirDocumento(enVistaPrevia)}
+          onCerrar={() => setEnVistaPrevia(null)}
+        />
+      )}
     </div>
   );
 }

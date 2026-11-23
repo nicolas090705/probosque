@@ -1,0 +1,80 @@
+/* Ventana emergente de vista previa de documentos */
+.vp-dialogo {
+  width: min(960px, calc(100vw - 32px));
+  height: min(860px, calc(100dvh - 32px));
+  padding: 0;
+  border: 0;
+  border-radius: var(--radio-panel);
+  background: var(--superficie);
+  color: var(--tinta);
+  box-shadow: 0 24px 60px rgba(20, 35, 27, 0.35);
+  overflow: hidden;
+}
+
+.vp-dialogo::backdrop {
+  background: rgba(20, 35, 27, 0.6);
+}
+
+.vp-marco {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.vp-encabezado {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--linea);
+}
+
+.vp-encabezado-texto {
+  flex: 1;
+  min-width: 0;
+}
+
+.vp-titulo {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.vp-enlace {
+  color: var(--pino);
+  font-size: 0.9rem;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+
+.vp-cuerpo {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  background: var(--salvia);
+}
+
+.vp-visor {
+  flex: 1;
+  width: 100%;
+  border: 0;
+}
+
+.vp-mensaje {
+  margin: auto;
+  max-width: 46ch;
+  padding: 24px;
+  text-align: center;
+  color: var(--tinta-suave);
+}
+
+.vp-mensaje .vp-enlace {
+  white-space: normal;
+}
+
+@media (max-width: 560px) {
+  .vp-encabezado { flex-wrap: wrap; gap: 8px 16px; padding: 12px 16px; }
+  .vp-encabezado-texto { flex-basis: 100%; }
+  .vp-cerrar { margin-left: auto; }
+}

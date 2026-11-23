@@ -2,6 +2,7 @@ import { useState } from "react";
 import { HashRouter, Link, NavLink, Navigate, Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { ESTADOS, nombrePrograma, normalizarProgramaId } from "./datos/catalogos";
 import { camposDeConvocatoria, formatearRespuesta } from "./datos/camposFormulario";
+import { descargarArchivo } from "./api/cliente";
 import { ProveedorAlmacen, useAlmacen } from "./estado/Almacen";
 import EnlaceUbicacion from "./componentes/EnlaceUbicacion";
 import Convocatorias from "./paginas/Convocatorias";
@@ -194,6 +195,7 @@ function RutaDictamenes() {
       <EmisionDictamenes
         solicitudes={enDictamen}
         aprobadas={dictamenesAprobados}
+        onAbrirDocumento={(doc) => descargarArchivo(doc.url)}
         onFavorable={async (id, observaciones) => {
           try {
             await dictaminar(id, true, observaciones);

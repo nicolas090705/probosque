@@ -155,8 +155,27 @@
 }
 
 .ps-documentos a {
+  min-width: 0;
   color: var(--pino);
   font-weight: 600;
+}
+
+/* Botón que abre la ventana de vista previa (HU-2.4-01) */
+.ps-documento-ver {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  border: 1px solid var(--pino);
+  border-radius: var(--radio-control);
+  background: transparent;
+  color: var(--pino);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ps-documento-ver:hover {
+  background: var(--musgo);
 }
 
 /* Caja para escribir faltantes (HU-2.1-01) o el motivo del dictamen (HU-2.4-01) */
@@ -201,6 +220,10 @@
 }
 
 .ps-documentos li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
   padding: 10px 0;
   border-top: 1px solid var(--linea);
   overflow-wrap: anywhere;
